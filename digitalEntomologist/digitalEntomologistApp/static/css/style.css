@@ -385,7 +385,7 @@ mark,
   margin-bottom: 1rem;
   font-size: 1.25rem; }
 
-.blockquote-footer {
+.blockquote-footer { 
   display: block;
   font-size: 80%;
   color: #6c757d; }
@@ -8201,7 +8201,9 @@ h1, h2, h3, h4, h5,
   background: -ms-linear-gradient(-45deg, #f75959 0%, #f35587 100%);
   background: -webkit-linear-gradient(315deg, #f75959 0%, #f35587 100%);
   background: -o-linear-gradient(315deg, #f75959 0%, #f35587 100%);
-  background: linear-gradient(135deg, #f75959 0%, #f35587 100%);
+  /* background: linear-gradient(135deg, #f75959 0%, #f35587 100%); */
+  background: rgb(149,201,63);
+  background: linear-gradient(18deg, rgba(149,201,63,1) 0%, rgba(71,173,145,1) 100%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f75959', endColorstr='#f35587', GradientType=1 );
   color: #fff; }
   .text-wrap .text h2 {
@@ -8334,10 +8336,10 @@ h1, h2, h3, h4, h5,
   color: rgba(0, 0, 0, 0.2); }
 
 /* Style the checkmark/indicator */
-.checkbox-primary {
-  color: #f35588; }
+/* .checkbox-primary {
+  color: #f35588; } */
   .checkbox-primary input:checked ~ .checkmark:after {
-    color: #f35588; }
+    color: #66B870; }
 
 .btn {
   cursor: pointer;
@@ -8349,8 +8351,8 @@ h1, h2, h3, h4, h5,
   .btn:hover, .btn:active, .btn:focus {
     outline: none; }
   .btn.btn-primary {
-    background: #f35588;
-    border: 1px solid #f35588;
+    background: #66B870;
+    border: 1px solid #66B870;
     color: #fff;
     background: #f75959;
     background: -moz-linear-gradient(-45deg, #f75959 0%, #f35587 100%);
@@ -8360,19 +8362,21 @@ h1, h2, h3, h4, h5,
     background: -ms-linear-gradient(-45deg, #f75959 0%, #f35587 100%);
     background: -webkit-linear-gradient(315deg, #f75959 0%, #f35587 100%);
     background: -o-linear-gradient(315deg, #f75959 0%, #f35587 100%);
-    background: linear-gradient(135deg, #f75959 0%, #f35587 100%);
+    /* background: linear-gradient(135deg, #f75959 0%, #f35587 100%); */
+    background: rgb(149,201,63);
+    background: linear-gradient(348deg, rgba(149,201,63,1) 0%, rgba(71,173,145,1) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f75959', endColorstr='#f35587', GradientType=1 ); }
     .btn.btn-primary:hover {
-      border: 1px solid #f35588;
-      background: #f35588;
+      border: 1px solid #66B870;
+      background: #66B870;
       color: #fff; }
     .btn.btn-primary.btn-outline-primary {
-      border: 1px solid #f35588;
+      border: 1px solid #66B870;
       background: transparent;
-      color: #f35588; }
+      color: #66B870; }
       .btn.btn-primary.btn-outline-primary:hover {
         border: 1px solid transparent;
-        background: #f35588;
+        background: #66B870;
         color: #fff; }
   .btn.btn-white {
     background: #fff;
