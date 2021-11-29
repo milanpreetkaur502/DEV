@@ -1,0 +1,72 @@
+{%extends 'base.html'%}
+
+{%block pageHeading%}Dashboard{%endblock%}
+
+{%block navBtns%}
+<li class="active"><a href="#"><img class="icon" ><P>Dashboard</P></a></li>
+{%endblock%}
+
+{%block content%}
+
+<div class="w3-panel" style="padding: 0px;">
+    <button type="button" class="w3-btn w3-blue" onclick="deviceRegistrationFormToggler()">Register a new device +</button>
+</div>
+
+<div class="w3-panel w3-leftbar w3-border-blue" style="display: none;" id="deviceRegistrationForm">
+    <form action="/registerDevice" method="post">
+        <div class="w3-row-padding">
+            <div class="w3-third">
+                <label for="serialID">Serial ID</label>
+            <input class="w3-input w3-border" type="text" placeholder="Serial ID" name="serialID" required>
+            </div>
+            <div class="w3-third">
+                <label for="password">Security key</label>
+            <input class="w3-input w3-border" type="password" placeholder="Password" name="password" required>
+            </div>
+            <div class="w3-third" style="padding-top: 24px;">
+                <button type="submit" class="w3-btn w3-green">Register</button>
+                <button type="button" class="w3-btn w3-red" onclick="cancelRegistrationHandler()">Cancel</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div>
+    <table class="w3-table w3-centered w3-border w3-striped">
+        <thead>
+            <tr class="w3-green">
+                <th>Sr no.</th>
+                <th>Serial ID</th>
+                <th>Device Provisoned</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="3"> Currently you have No device Registered</td>
+             </tr>
+            <tr>
+                <td>1</td>
+                <td>Dummy Value</td>
+                <td>YES</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Dummy Value</td>
+                <td>NO</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function deviceRegistrationFormToggler(){
+        let form=document.getElementById('deviceRegistrationForm');
+        form.style.display='block';
+    }
+    function cancelRegistrationHandler(){
+        let form=document.getElementById('deviceRegistrationForm');
+        form.style.display='none';
+    }
+</script>
+{%endblock%}
+

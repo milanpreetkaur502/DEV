@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "../../.."
+		},
+		{
+			"path": "../../../../Projects"
+		},
+		{
+			"path": "../../../../invoiceGenerator"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "excelPoc"
+	}
+}

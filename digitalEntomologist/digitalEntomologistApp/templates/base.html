@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/w3.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/base.css')}}">
+    <title>DE{%block title%} {%endblock%}</title>
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="main-wrapper">
+
+       <!-- --------------------- sidePannel-------------------- -->
+        <div class="sidePannel">
+            <div class="logo">
+                Digital Entomologist
+            </div>
+
+            <div class="button-container">
+                <ul>
+                  {% block navBtns %}
+
+                  {%endblock%}
+                </ul>
+            </div>
+        </div>
+        <!-- --------------sidePannel end -------------------------------------- -->
+
+
+        <!-- --------------Main container --------------------------------- -->
+        <div class="main">
+            <div class="main-header">
+                <p>{%block pageHeading%}{%endblock%}</p>
+                <button onclick="log()" type="submit">LogOut</button>
+                {%block headerBtns%}{%endblock%}
+                  <script>
+                    function log(){
+                      window.location.assign('/logOut');
+                    }
+                  </script>
+            </div>
+
+
+            <!-- -----Content Box of the data ----------------------------- -->
+            <div class="content-container">
+                {% block content %} {%endblock%}
+            </div>
+            <!-- ------Content box end --------------------------------------- -->
+        </div>
+        <!-- --------------Main container end --------------------------------- -->
+    </div>
+
+    <!-- Ending here -->
+</body>
+</html>
