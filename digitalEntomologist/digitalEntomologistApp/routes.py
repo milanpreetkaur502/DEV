@@ -4,11 +4,6 @@ from digitalEntomologistApp import app
 import boto3
 from boto3.dynamodb.conditions import Key
 
-dynamoDb=boto3.resource('dynamodb',
-                        aws_access_key_id     = 'AKIA6GBLI5P24SAUUMEJ',
-                        aws_secret_access_key = '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',
-                        region_name           = 'us-east-1'
-                                    )
 
 userTable=dynamoDb.Table('user')  
 deviceDataTable=dynamoDb.Table('deviceData')  
