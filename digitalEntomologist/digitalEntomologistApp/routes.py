@@ -1,23 +1,30 @@
 from re import L
 from flask import render_template, url_for, request, session, redirect
 from digitalEntomologistApp import app
+import json
 import boto3
-from boto3.dynamodb.conditions import Key
+from boto3.dynamodb.conditions import Attr
 
+file=open("/home/attu/Desktop/ScratchNest/awsCredentials.json")
+credentialsData=json.load(file)
+
+dynamoDb=boto3.resource('dynamodb',
+                        aws_access_key_id     = credentialsData['aws-access-key-id'],
+                        aws_secret_access_key = credentialsData['aws-secret-access-key'],
+                        region_name           = credentialsData['aws-region']
+                                    )
 
 userTable=dynamoDb.Table('user')  
 deviceDataTable=dynamoDb.Table('deviceData')  
 
 
 
+
 @app.route('/')
 def home():
     if 'email' in session:
-        # response = deviceDataTable.query(
-        # KeyConditionExpression=Key('email').eq(session['email'])
-        # )
-        # print(response)
-        return render_template('home.html')
+        response = deviceDataTable.scan(FilterExpression=Attr('email').eq(session['email']))
+        return render_template('home.html',data=response['Items'])
     return redirect('login')
 
 @app.route("/login",methods=['GET','POST'])
