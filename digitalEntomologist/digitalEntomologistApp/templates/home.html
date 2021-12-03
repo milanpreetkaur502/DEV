@@ -41,19 +41,19 @@
             </tr>
         </thead>
         <tbody>
+            {%if data%}
+                {%for item in data%}
+            <tr>
+                <td>{{loop.index}}</td>
+                <td>{{item.serialID}}</td>
+                <td>{{item.deviceProvisoned}}</td>
+            </tr>
+                {%endfor%}
+            {%else%}
             <tr>
                 <td colspan="3"> Currently you have No device Registered</td>
              </tr>
-            <tr>
-                <td>1</td>
-                <td>Dummy Value</td>
-                <td>YES</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Dummy Value</td>
-                <td>NO</td>
-            </tr>
+            {%endif%}
         </tbody>
     </table>
 </div>
