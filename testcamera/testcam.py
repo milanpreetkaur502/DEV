@@ -7,9 +7,10 @@ from datetime import datetime
 import time
 import random
 
-DEFAULT_CAMERA_NAME = '/dev/v4l/by-id/usb-046d_0825_6DCDEF50-video-index0'
+DEFAULT_CAMERA_NAME = '/dev/v4l/by-path/platform-video-index0'
 
 device_num = 0
+'''
 if os.path.exists(DEFAULT_CAMERA_NAME):
     device_path = os.path.realpath(DEFAULT_CAMERA_NAME)
     device_re = re.compile("\/dev\/video(\d+)")
@@ -17,8 +18,12 @@ if os.path.exists(DEFAULT_CAMERA_NAME):
     if info:
         device_num = int(info.group(1))
         print("Using default video capture device on /dev/video" + str(device_num))
-cap = cv2.VideoCapture(device_num)
-
+'''
+print(device_num)
+cap = cv2.VideoCapture("v4l2src ! video/x-raw,width=1280,height=720,format=(string)BGRx,framerate=30/1 ! decodebin ! videoconvert ! appsink",cv2.CAP_GSTREAMER)
+#! video/x-raw,width=640,height=480,format=UYVY,framerate=30/1 ! decodebin ! imxvideoconvert_g2d ! appsink", cv2.CAP_GSTREAMER)
+#cap.set(3,3840)
+#cap.set(4,2160)
 
 def rescale_frame(frame, percent=71): #Setting parameters
     width = int(frame.shape[1] * percent / 100)
@@ -29,7 +34,7 @@ def rescale_frame(frame, percent=71): #Setting parameters
 while (True):
     ret1, frame11 = cap.read()
     ret1, frame12 = cap.read()
-
+    #print (frame11.scale,frame12.scale)
     diff1 = cv2.absdiff(frame11, frame12)#Absoulte difference between the pixels of the  1st and 2nd image frame or By using this we will be able to extract just the pixels of the objects that are moving
 
     gray1 = cv2.cvtColor(diff1, cv2.COLOR_BGR2GRAY)# converting this difference into gray scale mode and  grayscale images are single-dimensional, Reduces model complexity
@@ -44,12 +49,12 @@ while (True):
 
     for contour in contours1:
         (x, y, w, h) = cv2.boundingRect(contour)# making of rectangular frame.
-        if cv2.contourArea(contour) < 2000: # if area of contour is less than 2000, then we are going to do nothing.But if its greater than 2000, a rectangle will be drawn.
+        if cv2.contourArea(contour) < 4000: # if area of contour is less than 2000, then we are going to do nothing.But if its greater than 2000, a rectangle will be drawn.
             continue
         cv2.rectangle(frame11, (x, y), (x + w, y + h), (0, 255, 0), 2)
         cv2.putText(frame11, "Status: {}".format('Insect captured'), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
         t = time.localtime()
-        path = '/home/lab/gateway/capture/' # path where images will be stored
+        path = '/home/root/test/captures/' # path where images will be stored
         num = random.random()
         filename = path + str(t[0]) + str(t[1]) + str(t[2]) + "_" + str(t[3]) + str(t[4]) + str(t[5]) + str(num) + ".jpg"
         cv2.imwrite(filename, frame11, [int(cv2.IMWRITE_JPEG_QUALITY), 95])
@@ -57,7 +62,7 @@ while (True):
 
     # cv2.line(frame, (0, 300), (200, 200), (0, 255, 0), 5)
     resizedframe11 = rescale_frame(frame11, percent=75)
-    cv2.imshow('Ready to capture', resizedframe11)
+    #cv2.imshow('Ready to capture', resizedframe11)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
