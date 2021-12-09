@@ -1,9 +1,4 @@
 #! /usr/bin/env python
-'''
-author: Nilohit, Pratyush
-Date: 06/12/2021
-
-'''
 import os
 import re
 import cv2
@@ -12,9 +7,9 @@ from datetime import datetime
 import time
 import random
 
-DEFAULT_CAMERA_NAME = '/dev/v4l/by-path/platform-video-index0'
+#DEFAULT_CAMERA_NAME = '/dev/v4l/by-path/platform-video-index0'
 
-device_num = 0
+#device_num = 0
 '''
 if os.path.exists(DEFAULT_CAMERA_NAME):
     device_path = os.path.realpath(DEFAULT_CAMERA_NAME)
@@ -24,12 +19,12 @@ if os.path.exists(DEFAULT_CAMERA_NAME):
         device_num = int(info.group(1))
         print("Using default video capture device on /dev/video" + str(device_num))
 '''
-print(device_num)
-cap = cv2.VideoCapture("v4l2src ! video/x-raw,width=1280,height=720,format=(string)BGRx,framerate=30/1 ! decodebin ! videoconvert ! appsink",cv2.CAP_GSTREAMER)
+#print(device_num)
+cap = cv2.VideoCapture("v4l2src ! video/x-raw,width=1280,height=720,format=(string)BGRx,framerate=70/1 ! decodebin ! videoconvert ! appsink",cv2.CAP_GSTREAMER)
 #! video/x-raw,width=640,height=480,format=UYVY,framerate=30/1 ! decodebin ! imxvideoconvert_g2d ! appsink", cv2.CAP_GSTREAMER)
 #cap.set(3,3840)
 #cap.set(4,2160)
-
+num=1
 def rescale_frame(frame, percent=71): #Setting parameters
     width = int(frame.shape[1] * percent / 100)
     height = int(frame.shape[0] * percent / 100)
@@ -60,11 +55,11 @@ while (True):
         cv2.putText(frame11, "Status: {}".format('Insect captured'), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
         t = time.localtime()
         path = '/home/root/test/captures/' # path where images will be stored
-        num = random.random()
+        #num = random.random()
         filename = path + str(t[0]) + str(t[1]) + str(t[2]) + "_" + str(t[3]) + str(t[4]) + str(t[5]) + str(num) + ".jpg"
         cv2.imwrite(filename, frame11, [int(cv2.IMWRITE_JPEG_QUALITY), 95])
         print('Image being capture...', filename)
-
+        num+=1
     # cv2.line(frame, (0, 300), (200, 200), (0, 255, 0), 5)
     resizedframe11 = rescale_frame(frame11, percent=75)
     #cv2.imshow('Ready to capture', resizedframe11)
