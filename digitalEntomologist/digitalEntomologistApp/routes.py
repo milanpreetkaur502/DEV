@@ -68,7 +68,7 @@ def registerDevice():
                 'serialID':serialID,
                 'email':email,
                 'deivceBooted':False,
-                'deviceProvisoned':False
+                'deviceProvisoned':True
             }
         )
     return redirect(url_for('home'))
