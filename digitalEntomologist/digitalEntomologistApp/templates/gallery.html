@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+div.gallery {
+  margin: 5px;
+  border: 1px solid #ccc;
+  float: left;
+  width: 180px;
+}
+
+div.gallery:hover {
+  border: 1px solid #777;
+}
+
+div.gallery img {
+  width: 100%;
+  height: auto;
+}
+
+div.desc {
+  padding: 15px;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+
+    <div>
+        <center>
+            <h1>Digital Entomologist</h1>
+        </center>
+    </div>
+
+    {%for item in data%}
+    <div class="gallery">
+        <a href="#">
+          <img src="{{item.image_key}}" alt="Cinque Terre" width="600" height="400">
+        </a>
+      </div>
+      {%endfor%}
+      
+</body>
+</html>
+
+
