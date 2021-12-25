@@ -1,5 +1,6 @@
 from re import L
 from flask import render_template, url_for, request, session, redirect
+from werkzeug.wrappers import response
 from digitalEntomologistApp import app
 import json
 import boto3
@@ -16,6 +17,7 @@ dynamoDb=boto3.resource('dynamodb',
 
 userTable=dynamoDb.Table('user')  
 deviceDataTable=dynamoDb.Table('deviceData')  
+imageTable=dynamoDb.Table('imageKey')
 
 
 
@@ -77,3 +79,8 @@ def registerDevice():
 def logout():
     session.pop('email')
     return redirect('login')
+
+@app.route('/img')
+def imgRenderer():
+    resp=imageTable.scan()
+    return render_template('gallery.html',data=resp['Items'])
