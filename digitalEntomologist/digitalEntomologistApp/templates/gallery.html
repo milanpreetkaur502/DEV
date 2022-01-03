@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <style>
 div.gallery {
   margin: 5px;
@@ -35,11 +36,24 @@ div.desc {
     {%for item in data%}
     <div class="gallery">
         <a href="#">
-          <img src="{{item.image_key}}" alt="Cinque Terre" width="600" height="400">
+          <img src="{{item.image_key}}" alt="Entomoligist img" width="600" height="400" onclick="onClick(this)">
         </a>
       </div>
       {%endfor%}
+      <div id="modal01" class="w3-modal w3-animate-zoom" onclick="this.style.display='none'">
+        <header class="w3-container w3-teal">
+          <span onclick="document.getElementById('id01').style.display='none'"
+          class="w3-button w3-display-topright">&times;</span>
+        </header>
+        <img class="w3-modal-content" id="img01" style="width:100%;height:100%;">
+      </div>
       
+      <script>
+      function onClick(element) {
+        document.getElementById("img01").src = element.src;
+        document.getElementById("modal01").style.display = "block";
+      }
+      </script>
 </body>
 </html>
 
