@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{url_for('static',filename='css/w3.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='css/base.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>DE{%block title%} {%endblock%}</title>
 </head>
 <body>
@@ -31,7 +32,8 @@
         <!-- --------------Main container --------------------------------- -->
         <div class="main">
             <div class="main-header">
-                <p>{%block pageHeading%}{%endblock%}</p>
+                <span class="headerForDesktop"><p>{%block pageHeading%}{%endblock%}</p></span>
+                <span class="headerForMobile"><p>DigitalEntomologist</p></span>
                 <button onclick="log()" type="submit">LogOut</button>
                 {%block headerBtns%}{%endblock%}
                   <script>

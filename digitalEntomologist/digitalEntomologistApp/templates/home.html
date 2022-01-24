@@ -38,6 +38,7 @@
                 <th>Sr no.</th>
                 <th>Serial ID</th>
                 <th>Device Provisoned</th>
+                <th>Configure</th>
             </tr>
         </thead>
         <tbody>
@@ -47,6 +48,7 @@
                 <td>{{loop.index}}</td>
                 <td>{{item.serialID}}</td>
                 <td>{{item.deviceProvisoned}}</td>
+                <td><button class="w3-button"><i class="fa fa-cog w3-large"></i></button></td>
             </tr>
                 {%endfor%}
             {%else%}
