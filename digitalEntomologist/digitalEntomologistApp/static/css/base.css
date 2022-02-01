@@ -155,6 +155,11 @@ body{
     background-color: red;
     border-radius: 50%;
 }
+.activeBtnInModal{
+    border-radius: 20px 0px 0px 20px;
+    width: 106% !important;
+    background-color: white;
+}
 
 @media only screen and (max-width: 600px) {
     .sidePannel{
