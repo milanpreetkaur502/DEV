@@ -48,7 +48,7 @@
                 <td>{{loop.index}}</td>
                 <td>{{item.serialID}}</td>
                 <td>{{item.deviceProvisoned}}</td>
-                <td><button class="w3-button"><i class="fa fa-cog w3-large"></i></button></td>
+                <td><button value="{{item.serialID}}" class="w3-button" onclick="openConfigModel(this)"><i class="fa fa-cog w3-large"></i></button></td>
             </tr>
                 {%endfor%}
             {%else%}
@@ -60,15 +60,101 @@
     </table>
 </div>
 
-<script>
-    function deviceRegistrationFormToggler(){
-        let form=document.getElementById('deviceRegistrationForm');
-        form.style.display='block';
-    }
-    function cancelRegistrationHandler(){
-        let form=document.getElementById('deviceRegistrationForm');
-        form.style.display='none';
-    }
-</script>
+            
+<div id="modalForConfig" class="w3-modal" style="padding: 50px 100px; display:none;">
+    <div class="w3-card w3-light-grey w3-animate-bottom" style="height: 100%; width:100%;">
+        <span onclick="document.getElementById('modalForConfig').style.display='none'" class="w3-button w3-xlarge w3-red w3-display-topright" title="Close Modal" style="z-index: 1;">&times;</span>
+        <!-- Header for Modal -->
+        <div class="w3-teal" style="position: absolute; width:100%;">
+          <div id="modalHeader" class="w3-center w3-panel w3-large" style="margin:13px 0px;"> You are sending job to device</div>
+        </div>
+
+        <!-- Job creator panel -->
+        <div class="w3-twothird" style="height: 100%; padding:60px 10px 60px 0;">
+            <!-- Side Panel for btns -->
+            <div id="btnContainerForModal" class="w3-quarter w3-padding-24 w3-bar-block" style="margin-right:5px;background: linear-gradient(0deg, rgba(149,201,63,1) 0%, rgba(71,173,145,1) 100%);height:100%;max-width:200px;padding-left:5px;">
+                <button data-btnBindedToCard="configCardsForDevice" value="device" id="modalSidePanelDeviceBtn" class="w3-bar-item w3-large activeBtnInModal" onclick="modalSidePanelBtnHandler(this)" >Device</button>
+                <button data-btnBindedToCard="configCardsForCloud"  value="cloud" class="w3-bar-item w3-large w3-transparent w3-text-white" onclick="modalSidePanelBtnHandler(this)">Cloud</button>
+                <button data-btnBindedToCard="configCardsForCamera" value="camera" class="w3-bar-item w3-large w3-transparent w3-text-white" onclick="modalSidePanelBtnHandler(this)">Camera</button>
+                <button data-btnBindedToCard="configCardsForGetLogs" value="getLogs" class="w3-bar-item w3-large w3-transparent w3-text-white" onclick="modalSidePanelBtnHandler(this)">Get Logs</button>
+                <button data-btnBindedToCard="configCardsForGetData" value="getData" class="w3-bar-item w3-large w3-transparent w3-text-white" onclick="modalSidePanelBtnHandler(this)">Get Data</button>
+            </div>
+
+            <!-- Container for job creation config cards -->
+            <div class="w3-card w3-rest w3-padding w3-white" style="height: 100%;border-radius:10px;overflow-y:auto;">
+                <!-- Internal cards for device -->
+                <div id="configCardsForDevice" class="w3-animate-left w3-visible">
+                    <div class="w3-card w3-panel w3-padding-16 w3-round" onclick="configCardClickHandler(this)">
+                        <label for="Device-Up-Time" class="w3-large w3-text-teal">Device Up Time</label>
+                        <input class="w3-input w3-border" name="Device-Up-Time" type="number">
+                    </div>
+                    <div class="w3-card w3-panel w3-padding-16 w3-round" onclick="configCardClickHandler(this)">
+                        <label for="Device-On-Time" class="w3-large w3-text-teal">Device On Time</label>
+                        <input class="w3-input w3-border" name="Device-On-Time" type="number">
+                    </div>
+                    <div class="w3-card w3-panel w3-padding-16 w3-round" onclick="configCardClickHandler(this)">
+                        <label for="Device-Upload-Time" class="w3-large w3-text-teal">Device Upload Time</label>
+                        <input class="w3-input w3-border" name="Device-Upload-Time" type="number">
+                    </div>
+                </div>
+                <!-- Internal cards for cloud -->
+                <div id="configCardsForCloud" class="w3-animate-left w3-hide">
+                    <div class="w3-card w3-panel w3-padding-16 w3-round" onclick="configCardClickHandler(this)">
+                        <label for="inpDeviceUptime" class="w3-large w3-text-teal">Cloud ki random Setting</label>
+                        <input class="w3-input w3-border" name="inpDeviceUptime" type="text">
+                    </div>
+                    <div class="w3-card w3-panel w3-padding-16 w3-round" onclick="configCardClickHandler(this)">
+                        <label for="inpDeviceOntime" class="w3-large w3-text-teal">Cloud m change</label>
+                        <input class="w3-input w3-border" name="inpDeviceOntime" type="text">
+                    </div>
+                    <div class="w3-card w3-panel w3-padding-16 w3-round" onclick="configCardClickHandler(this)">
+                        <label for="inpDeviceUploadTime" class="w3-large w3-text-teal">Cloud ...</label>
+                        <input class="w3-input w3-border" name="inpDeviceUploadTime" type="text">
+                    </div>
+                </div>
+                <!-- Internal cards for camera -->
+                <div id="configCardsForCamera" class="w3-animate-left w3-hide" >
+                    <div class="w3-card w3-panel w3-padding-16 w3-round" onclick="configCardClickHandler(this)">
+                        <label for="inpDeviceUptime" class="w3-large w3-text-teal">Camera 1</label>
+                        <input class="w3-input w3-border" name="inpDeviceUptime" type="text">
+                    </div> 
+                    <div class="w3-card w3-panel w3-padding-16 w3-round" onclick="configCardClickHandler(this)">
+                        <label for="inpDeviceOntime" class="w3-large w3-text-teal">Camera 2</label>
+                        <input class="w3-input w3-border" name="inpDeviceOntime" type="text">
+                    </div>
+                </div>
+                <!-- Internal cards for getLogs -->
+                <div id="configCardsForGetLogs" class="w3-animate-left w3-hide" >
+                    This For Get logs
+                </div>
+                <!-- Internal cards for getData -->
+                <div id="configCardsForGetData" class="w3-animate-left w3-hide" >
+                    This for Get data
+                </div>
+
+            </div>
+
+          
+        </div>
+
+        <!-- All Jobs Card displayer -->
+        <div  class="w3-third" style="height: 100%; padding:60px 5px;">
+          <div id="jobCardsDisplayer" class="w3-display-container" style="padding:5px;background-color:#e2e1e0;box-shadow: rgba(0, 0, 0, 0.6) 0px 2px 4px 0px inset; width:100%; height:100%;">
+            <div class="w3-container w3-center">
+              <span class="w3-xlarge">Job Board</span>
+            </div>
+
+            <button class="w3-btn w3-green w3-display-bottomright" style="margin-bottom: 5px;margin-right:5px;" onclick="sendHandler()">SEND</button>
+          </div>
+        </div>
+
+        <!-- Footer/Button pannel for modal  -->
+        <div class="w3-teal" style="position: absolute; width:100%; bottom:0;">
+          <div id="modalFooter" class="w3-center w3-panel w3-bold"> Digital Entomologist</div>
+        </div>
+    </div>
+
+</div>
+
 {%endblock%}
 
