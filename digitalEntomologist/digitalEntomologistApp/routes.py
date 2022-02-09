@@ -1,8 +1,9 @@
 from re import L
-from flask import render_template, url_for, request, session, redirect
+from flask import flash, render_template, url_for, request, session, redirect
 from werkzeug.wrappers import response
 from digitalEntomologistApp import app
 import json
+import hashlib
 import boto3
 from boto3.dynamodb.conditions import Attr
 
@@ -39,9 +40,12 @@ def login():
                 'email': email
             }
         )
-        if 'Item' in response and request.form.get('password')==response['Item']['password']:
-            session['email']=email
-            return redirect(url_for('home'))
+        if 'Item' in response:
+             pas = request.form.get('password')
+             pas = hashlib.md5(pas.encode()).hexdigest()
+             if pas==response['Item']['password']:
+                session['email']=email
+                return redirect(url_for('home'))
         return render_template('login.html',msg='Wrong Credentials')
     return render_template('login.html')
 
@@ -50,7 +54,8 @@ def registerUser():
     if request.method=='POST':
         email=request.form['email']
         name=request.form['name']
-        password=request.form['password']
+        password = request.form['password']
+        password = hashlib.md5(password.encode()).hexdigest()
         response=userTable.put_item(
             Item={
                 'email':email,
@@ -66,14 +71,18 @@ def registerDevice():
     if 'email' in session and request.method=='POST':
         email=session['email']
         serialID=request.form['serialID']
-        response=deviceDataTable.put_item(
-            Item={
-                'serialID':serialID,
-                'email':email,
-                'deivceBooted':False,
-                'deviceProvisoned':True
-            }
-        )
+        try:
+            response=deviceDataTable.put_item(
+                Item={
+                    'serialID':serialID,
+                    'email':email,
+                    'deviceBooted':False,
+                    'deviceProvisoned':True
+                },
+                ConditionExpression="attribute_not_exists(serialID)"
+            )
+        except Exception as e:
+            flash("Device Already registered")
     return redirect(url_for('home'))
         
 @app.route('/logOut')
