@@ -11,6 +11,17 @@
 <body>
     <div class="bg"></div>
     <div class="main-wrapper">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                <div class="w3-panel w3-red w3-card w3-animate-top" style="position: absolute;z-index:5;margin-left:20%;margin-right:20%;width:60%;">
+                    <span onclick="this.parentElement.style.display='none'"
+                        class="w3-button w3-display-topright">&times;</span>
+                    <h3 class="w3-center">{{message}}</h3>
+                </div> 
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
        <!-- --------------------- sidePannel-------------------- -->
         <div class="sidePannel">
