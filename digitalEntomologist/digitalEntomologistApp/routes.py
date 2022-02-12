@@ -9,6 +9,7 @@ from boto3.dynamodb.conditions import Attr
 
 file=open("/home/attu/Desktop/ScratchNest/awsCredentials.json")
 credentialsData=json.load(file)
+file.close()
 
 dynamoDb=boto3.resource('dynamodb',
                         aws_access_key_id     = credentialsData['aws-access-key-id'],
@@ -21,13 +22,11 @@ deviceDataTable=dynamoDb.Table('deviceData')
 imageTable=dynamoDb.Table('imageKey')
 
 
-
-
 @app.route('/')
 def home():
     if 'email' in session:
-        response = deviceDataTable.scan(FilterExpression=Attr('email').eq(session['email']))
-        # response={'Items': [{'deivceBooted': 'true', 'email': 'atul@gmail.com', 'serialID': 'D004', 'deviceProvisoned': True}, {'deivceBooted': 'true', 'email': 'atul@gmail.com', 'serialID': 'D002', 'deviceProvisoned': True}]}
+        # response = deviceDataTable.scan(FilterExpression=Attr('email').eq(session['email']))
+        response={'Items': [{'deviceBooted': False, 'email': 'atul@gmail.com', 'serialID': 'D004', 'deviceProvisoned': True}, {'deviceBooted': True, 'email': 'atul@gmail.com', 'serialID': 'D002', 'deviceProvisoned': True}]}
         return render_template('home.html',data=response['Items'])
     return redirect('login')
 
@@ -56,6 +55,8 @@ def registerUser():
         name=request.form['name']
         password = request.form['password']
         password = hashlib.md5(password.encode()).hexdigest()
+        #here is bug that need to be resolved in future
+        #the user can re-register them-self with the same email-id forcing the password to get updated
         response=userTable.put_item(
             Item={
                 'email':email,

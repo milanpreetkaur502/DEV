@@ -23,7 +23,8 @@ function sendHandler(){
     job.getLogs=Object.fromEntries(job.getLogs);
     job.getData=Object.fromEntries(job.getData);
     let jsonData = JSON.stringify(job);
-
+    let spinner=document.getElementById("msgDisplayerRecievedFromJob");
+    spinner.style.display='block';
     const url = "https://aaxsxrwma8.execute-api.us-east-1.amazonaws.com/sendJob"
     let fetchData = {
         method:'POST',
@@ -35,16 +36,22 @@ function sendHandler(){
     .then(
         (response)=>{
             response.json()
-            .then((data)=>{console.log(data);
-                                            
-            });
+            .then((data)=>{
+                spinner.style.display='none';
+                if (response.status==200){
+                    flashMsg(data,"w3-green");
+                }else{
+                    flashMsg(data,"w3-red");
+                }
+            });    
         })
+    
     
 }
 
 function addJobHandler(element){
     let div = element.parentElement;
-    let inp = element.previousSibling.previousSibling;
+    let inp = element.previousSibling.previousSibling.previousSibling.previousSibling;
     let value = inp.value;
     let key = inp.name;
     if (value==""){
@@ -102,11 +109,20 @@ function modalSidePanelBtnHandler(btnElement){
 }
 
 function openConfigModel(btnElement){
+    bootStatus=btnElement.getAttribute("data-devicebooted");
+    if (bootStatus=="False"){
+        flashMsg("Device has not booted yet","w3-red");
+        return 
+    }
     let modal = document.getElementById("modalForConfig");
     modal.style.display='block';
     let modalHeader = document.getElementById('modalHeader');
     modalHeader.innerText="You are sending job to device "+btnElement.value;
     job.deviceId=btnElement.value;
+}
+function closeConfigModel(){
+    document.getElementById('modalForConfig').style.display='none';
+    location.reload();
 }
 
 function deviceRegistrationFormToggler(){
@@ -116,4 +132,12 @@ function deviceRegistrationFormToggler(){
 function cancelRegistrationHandler(){
     let form=document.getElementById('deviceRegistrationForm');
     form.style.display='none';
+}
+
+function flashMsg(msg,color="w3-red"){
+    document.getElementById("flashMsg").innerText=msg;
+    let elmnt = document.getElementById("flashCard");
+    elmnt.classList.remove("w3-red")
+    elmnt.classList.add(color);
+    elmnt.style.display="block";
 }
