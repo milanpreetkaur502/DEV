@@ -25,8 +25,8 @@ imageTable=dynamoDb.Table('imageKey')
 @app.route('/')
 def home():
     if 'email' in session:
-        # response = deviceDataTable.scan(FilterExpression=Attr('email').eq(session['email']))
-        response={'Items': [{'deviceBooted': False, 'email': 'atul@gmail.com', 'serialID': 'D004', 'deviceProvisoned': True}, {'deviceBooted': True, 'email': 'atul@gmail.com', 'serialID': 'D002', 'deviceProvisoned': True}]}
+        response = deviceDataTable.scan(FilterExpression=Attr('email').eq(session['email']))
+        # response={'Items': [{'deviceBooted': False, 'email': 'atul@gmail.com', 'serialID': 'D004', 'deviceProvisoned': True}, {'deviceBooted': True, 'email': 'atul@gmail.com', 'serialID': 'D002', 'deviceProvisoned': True}]}
         return render_template('home.html',data=response['Items'])
     return redirect('login')
 
