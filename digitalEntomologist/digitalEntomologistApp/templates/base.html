@@ -11,6 +11,11 @@
 <body>
     <div class="bg"></div>
     <div class="main-wrapper">
+        <div id="flashCard" class="w3-panel w3-card w3-animate-top" style="display:none;position: absolute;z-index:5;margin-left:20%;margin-right:20%;width:60%;">
+            <span onclick="this.parentElement.style.display='none'"
+                class="w3-button w3-display-topright">&times;</span>
+            <h3 id="flashMsg" class="w3-center"></h3>
+        </div>
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for message in messages %}
