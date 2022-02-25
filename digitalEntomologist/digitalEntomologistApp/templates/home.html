@@ -86,19 +86,19 @@
                 <!-- Internal cards for device -->
                 <div id="configCardsForDevice" class="w3-animate-left w3-visible">
                     <div class="w3-card w3-panel w3-padding-16 w3-round" onclick="configCardClickHandler(this)">
-                        <label for="Device-Up-Time" class="w3-large w3-text-teal">Device Up Time</label>
-                        <input class="w3-input w3-border" name="Device-Up-Time" type="number" min='.1' max="22" >
-                        <span class="w3-small">*Takes the numeric value in hours(.1hr-22hr) for which device is going to remain up and camera will work.</span>
+                        <label for="Device-Up-Time" class="w3-large w3-text-teal">Device On Time</label>
+                        <input class="w3-input w3-border" name="Device-On-Time" type="number" min='.1' max="22" >
+                        <span class="w3-small">*Takes the numeric value in hours(1hr-22hr) for which device is going to remain on and camera will work.</span>
                     </div>
                     <div class="w3-card w3-panel w3-padding-16 w3-round" onclick="configCardClickHandler(this)">
-                        <label for="Device-On-Time" class="w3-large w3-text-teal">Device On Time</label>
-                        <input class="w3-input w3-border" name="Device-On-Time" type="number">
-                        <span class="w3-small">*Some msg...</span>
+                        <label for="Device-On-Time" class="w3-large w3-text-teal">Device Off Time</label>
+                        <input class="w3-input w3-border" name="Device-Off-Time" type="number">
+                        <span class="w3-small">*Takes only 24hr format time, ranging from 1-24</span>
                     </div>
                     <div class="w3-card w3-panel w3-padding-16 w3-round" onclick="configCardClickHandler(this)">
-                        <label for="Device-Upload-Time" class="w3-large w3-text-teal">Device Upload Time</label>
-                        <input class="w3-input w3-border" name="Device-Upload-Time" type="number">
-                        <span class="w3-small">*Some msg...</span>
+                        <label for="Device-Upload-Time" class="w3-large w3-text-teal">Device Test Duration</label>
+                        <input class="w3-input w3-border" name="Device-Test-Flag" type="number"  > 
+                        <span class="w3-small">*Takes value in min only ranging from 1-60 min</span>
                     </div>
                 </div>
                 <!-- Internal cards for cloud -->

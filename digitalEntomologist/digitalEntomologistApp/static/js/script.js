@@ -58,6 +58,10 @@ function addJobHandler(element){
         return null;
     }
     if(STATE.activeModalBtnName=="device"){
+        if (key=="Device-Test-Flag"){
+            job.device.set(key,'True');
+            key="Device-Test-Duration"    ;
+        }
         job.device.set(key,value);
     }else if(STATE.activeModalBtnName=="cloud"){
         job.cloud.set(key,value);
