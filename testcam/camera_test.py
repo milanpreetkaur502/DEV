@@ -10,7 +10,8 @@ class MotionRecorder(object):
     hist_threshold = 500    # motion sensitivity => higher the value lesser the sensitivity
     path = 0
     
-    cap = cv2.VideoCapture(path)
+    cap = cv2.VideoCapture("v4l2src ! video/x-raw, width=640, height=480, framerate=30/1, format=(string)BGRx ! decodebin ! videoconvert ! appsink", cv2.CAP_GSTREAMER)
+    #cap = cv2.VideoCapture("videotestsrc ! video/x-raw, format=I420, width=640, height=480 ! vpuenc_h264 ! appsink",cv2.CAP_GSTREAMER)
     subtractor = cv2.createBackgroundSubtractorMOG2()
     # FourCC is a 4-byte code used to specify the video codec. The list of available codes can be found in fourcc.org.
     fourcc = cv2.VideoWriter_fourcc(*'DIVX')     # for windows
