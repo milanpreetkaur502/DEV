@@ -85,14 +85,22 @@
             <div class="w3-card w3-rest w3-padding w3-white" style="height: 100%;border-radius:10px;overflow-y:auto;">
                 <!-- Internal cards for device -->
                 <div id="configCardsForDevice" class="w3-animate-left w3-visible">
+                    <div data-timeZone="True" class="w3-card w3-panel w3-padding-16 w3-round" onclick="configCardClickHandler(this)">
+                        <label for="time_zone">Set Time Zone</label>
+                        <select id="time_zone">
+                            <option value="Europe/Berlin">(GMT+01:00) Europe/Berlin</option>
+                            <option value="Asia/Kolkata">(GMT+05:30) India/Kolkata</option>
+                        </select><br>
+                        <span class="w3-small">*Add this to job card to set the timezone of the device</span>
+                    </div>
                     <div class="w3-card w3-panel w3-padding-16 w3-round" onclick="configCardClickHandler(this)">
                         <label for="Device-Up-Time" class="w3-large w3-text-teal">Device On Time</label>
-                        <input class="w3-input w3-border" name="Device-On-Time" type="number" min='.1' max="22" >
+                        <input class="w3-input w3-border" name="Device-On-Time" type="time" >
                         <span class="w3-small">*Takes the numeric value in hours(1hr-22hr) for which device is going to remain on and camera will work.</span>
                     </div>
                     <div class="w3-card w3-panel w3-padding-16 w3-round" onclick="configCardClickHandler(this)">
                         <label for="Device-On-Time" class="w3-large w3-text-teal">Device Off Time</label>
-                        <input class="w3-input w3-border" name="Device-Off-Time" type="number">
+                        <input class="w3-input w3-border" name="Device-Off-Time" type="time">
                         <span class="w3-small">*Takes only 24hr format time, ranging from 1-24</span>
                     </div>
                     <div class="w3-card w3-panel w3-padding-16 w3-round" onclick="configCardClickHandler(this)">
@@ -129,7 +137,11 @@
                 </div>
                 <!-- Internal cards for getLogs -->
                 <div id="configCardsForGetLogs" class="w3-animate-left w3-hide" >
-                    This For Get logs
+                    <div class="w3-card w3-panel w3-padding-16 w3-round" onclick="configCardClickHandler(this)">
+                        <label for="Get-All-Logs" class="w3-large w3-text-teal">Get All Logs</label><br>
+                        <input class="w3-input w3-border" name="Get-All-Logs" type="hidden" value="True" >
+                        <span class="w3-small">*Add this to Job Board to get all the logs.</span>
+                    </div> 
                 </div>
                 <!-- Internal cards for getData -->
                 <div id="configCardsForGetData" class="w3-animate-left w3-hide" >

@@ -31,7 +31,7 @@ function sendHandler(){
         body : jsonData,
 
     }
-
+    
     fetch(url,fetchData)
     .then(
         (response)=>{
@@ -61,6 +61,11 @@ function addJobHandler(element){
         if (key=="Device-Test-Flag"){
             job.device.set(key,'True');
             key="Device-Test-Duration"    ;
+        }
+        if (div.getAttribute("data-timeZone")=="True"){
+            let val = document.getElementById("time_zone").value;
+            key="Time-Zone";
+            value=val;
         }
         job.device.set(key,value);
     }else if(STATE.activeModalBtnName=="cloud"){
