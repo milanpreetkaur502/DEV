@@ -1,3 +1,4 @@
+from crypt import methods
 from re import L
 from flask import flash, render_template, url_for, request, session, redirect
 from werkzeug.wrappers import response
@@ -6,6 +7,7 @@ import json
 import hashlib
 import boto3
 from boto3.dynamodb.conditions import Attr
+import requests as rq
 
 file=open("/home/attu/Desktop/ScratchNest/awsCredentials.json")
 credentialsData=json.load(file)
@@ -25,9 +27,9 @@ imageTable=dynamoDb.Table('imageKey')
 @app.route('/')
 def home():
     if 'email' in session:
-        response = deviceDataTable.scan(FilterExpression=Attr('email').eq(session['email']))
-        # response={'Items': [{'deviceBooted': False, 'email': 'atul@gmail.com', 'serialID': 'D004', 'deviceProvisoned': True}, {'deviceBooted': True, 'email': 'atul@gmail.com', 'serialID': 'D002', 'deviceProvisoned': True}]}
-        return render_template('home.html',data=response['Items'])
+        # response = deviceDataTable.scan(FilterExpression=Attr('email').eq(session['email']))
+        response={'Items': [{'deviceBooted': False, 'email': 'atul@gmail.com', 'serialID': 'D004', 'deviceProvisoned': True}, {'deviceBooted': True, 'email': 'atul@gmail.com', 'serialID': 'D002', 'deviceProvisoned': True}]}
+        return render_template('home.html',data=response['Items'],key="Main")
     return redirect('login')
 
 @app.route("/login",methods=['GET','POST'])
@@ -95,3 +97,22 @@ def logout():
 def imgRenderer():
     resp=imageTable.scan()
     return render_template('gallery.html',data=resp['Items'])
+
+@app.route('/getFiles',methods=['POST'])
+def getFiles():
+    if 'email' in session and request.method=='POST':
+        serialID=request.form['serialID-query']
+        date=request.form['date']
+        type=request.form['File-Type']
+        response = deviceDataTable.scan(FilterExpression=Attr('email').eq(session['email']))
+        if 'Items' in response:
+            for element in response['Items']:
+                if element['serialID']==serialID:
+                    resp=rq.get(f"https://e99xrdespg.execute-api.us-east-1.amazonaws.com/v1/{type}?deviceid={serialID}&date={date}")
+                    resp=resp.json()
+                    return render_template('home.html',data=resp['videos'])
+            else:
+                flash("This device dosen't belongs to you")
+        else:
+            flash("Something wrong happened")
+    return redirect(url_for('home'))

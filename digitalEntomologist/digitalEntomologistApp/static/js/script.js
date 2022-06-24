@@ -134,12 +134,12 @@ function closeConfigModel(){
     location.reload();
 }
 
-function deviceRegistrationFormToggler(){
-    let form=document.getElementById('deviceRegistrationForm');
+function unhideForm(name){
+    let form=document.getElementById(name);
     form.style.display='block';
 }
-function cancelRegistrationHandler(){
-    let form=document.getElementById('deviceRegistrationForm');
+function hideForm(name){
+    let form=document.getElementById(name);
     form.style.display='none';
 }
 
