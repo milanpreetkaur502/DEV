@@ -8,10 +8,13 @@
 
 {%block content%}
 
+{%if key%}
 <div class="w3-panel" style="padding: 0px;">
-    <button type="button" class="w3-btn w3-blue" onclick="deviceRegistrationFormToggler()">Register a new device +</button>
+    <button type="button" class="w3-btn w3-blue" onclick="unhideForm('deviceRegistrationForm')">Register a new device +</button>
+    <button type="button" class="w3-btn w3-orange" onclick="unhideForm('file-querying-div')">View / Download Files </button>
 </div>
 
+<!-- Device registration form -->
 <div class="w3-panel w3-leftbar w3-border-blue" style="display: none;" id="deviceRegistrationForm">
     <form action="/registerDevice" method="post">
         <div class="w3-row-padding">
@@ -25,12 +28,41 @@
             </div>
             <div class="w3-third" style="padding-top: 24px;">
                 <button type="submit" class="w3-btn w3-green">Register</button>
-                <button type="button" class="w3-btn w3-red" onclick="cancelRegistrationHandler()">Cancel</button>
+                <button type="button" class="w3-btn w3-red" onclick="hideForm('deviceRegistrationForm')">Cancel</button>
             </div>
         </div>
     </form>
 </div>
-<div>
+
+<!-- View / Download file divison  -->
+<div class="w3-panel w3-leftbar w3-border-orange" style="display: none;" id="file-querying-div">
+    <form action="/getFiles" method="post" >
+        <div class="w3-row-padding">
+            <div class="w3-quarter">
+                <label for="File-Type">File-Type</label>
+                <select class="w3-input w3-border" name="File-Type" value="video">Video
+                    <option value="video">Video</option>
+                    <option value="weather">Weather</option>
+                </select>
+            </div>
+            <div class="w3-quarter">
+                <label for="serialID-query">Serial ID</label>
+            <input id="inp-serialID" class="w3-input w3-border" type="text" placeholder="Serial ID" name="serialID-query" required>
+            </div>
+            <div class="w3-quarter">
+                <label for="date">Date</label>
+            <input id="inp-date" class="w3-input w3-border" type="date" placeholder="Password" name="date" required>
+            </div>
+            <div class="w3-quarter" style="padding-top: 24px;">
+                <button type="submit" class="w3-btn w3-green" >Get Files</button>
+                <button type="button" class="w3-btn w3-red" onclick="hideForm('file-querying-div')">Cancel</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<div id="table-container">
     <table class="w3-table w3-centered w3-border w3-striped">
         <thead>
             <tr class="w3-green">
@@ -60,8 +92,7 @@
         </tbody>
     </table>
 </div>
-
-            
+      
 <div id="modalForConfig" class="w3-modal" style="padding: 50px 100px; display:none;">
     <div class="w3-card w3-light-grey w3-animate-bottom" style="height: 100%; width:100%;">
         <span onclick="closeConfigModel()" class="w3-button w3-xlarge w3-red w3-display-topright" title="Close Modal" style="z-index: 1;">&times;</span>
@@ -175,6 +206,36 @@
         </div>
     </div>
 </div>
+
+{%else%}
+<div class="w3-panel" style="padding: 0px;">
+   <a href="/"><button type="button" class="w3-btn w3-green"><i class="fa fa-arrow-left"></i> Back</button></a>
+</div>
+<div id="table-container">
+    <table class="w3-table w3-border w3-striped">
+        <thead>
+            <tr class="w3-green">
+                <th class="w3-quarter">Sr no.</th>
+                <th class="w3-threequarter">Files</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%if data%}
+                {%for item in data%}
+            <tr>
+                <td class="w3-quarter">{{loop.index}}</td>
+                <td class="w3-threequarter"><a href="{{item}}">{{item | replace('https://test-entomologist-2.s3.amazonaws.com/','')}}</a></td>
+            </tr>
+                {%endfor%}
+            {%else%}
+            <tr>
+                <td colspan="2"> No files have been found for this date</td>
+             </tr>
+            {%endif%}
+        </tbody>
+    </table>
+</div>
+{%endif%}
 
 {%endblock%}
 
