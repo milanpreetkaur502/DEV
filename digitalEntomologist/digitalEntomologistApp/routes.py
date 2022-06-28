@@ -110,7 +110,10 @@ def getFiles():
                 if element['serialID']==serialID:
                     resp=rq.get(f"https://e99xrdespg.execute-api.us-east-1.amazonaws.com/v1/{type}?deviceid={serialID}&date={date}")
                     resp=resp.json()
-                    return render_template('home.html',data=resp['videos'])
+                    if type=="videos":
+                        return render_template('home.html',data=resp['videos'])
+                    else:
+                        return render_template('home.html',data=resp['files'])
             else:
                 flash("This device dosen't belongs to you")
         else:
