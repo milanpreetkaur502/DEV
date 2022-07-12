@@ -110,7 +110,7 @@ def getFiles():
                 if element['serialID']==serialID:
                     resp=rq.get(f"https://e99xrdespg.execute-api.us-east-1.amazonaws.com/v1/{type}?deviceid={serialID}&date={date}")
                     resp=resp.json()
-                    if type=="videos":
+                    if type=="video":
                         return render_template('home.html',data=resp['videos'])
                     else:
                         return render_template('home.html',data=resp['files'])
