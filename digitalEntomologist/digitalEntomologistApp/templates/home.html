@@ -109,7 +109,7 @@
                 <button data-btnBindedToCard="configCardsForCloud"  value="cloud" class="w3-bar-item w3-large w3-transparent w3-text-white" onclick="modalSidePanelBtnHandler(this)">Cloud</button>
                 <button data-btnBindedToCard="configCardsForCamera" value="camera" class="w3-bar-item w3-large w3-transparent w3-text-white" onclick="modalSidePanelBtnHandler(this)">Camera</button>
                 <button data-btnBindedToCard="configCardsForGetLogs" value="getLogs" class="w3-bar-item w3-large w3-transparent w3-text-white" onclick="modalSidePanelBtnHandler(this)">Get Logs</button>
-                <button data-btnBindedToCard="configCardsForGetData" value="getData" class="w3-bar-item w3-large w3-transparent w3-text-white" onclick="modalSidePanelBtnHandler(this)">Get Data</button>
+                <button data-btnBindedToCard="configCardsForJobLogs" value="jobLogs" class="w3-bar-item w3-large w3-transparent w3-text-white" onclick="modalSidePanelBtnHandler(this)">Job Logs</button>
             </div>
 
             <!-- Container for job creation config cards -->
@@ -138,6 +138,11 @@
                         <label for="Device-Upload-Time" class="w3-large w3-text-teal">Device Test Duration</label>
                         <input class="w3-input w3-border" name="Device-Test-Flag" type="number"  > 
                         <span class="w3-small">*Takes value in min only ranging from 1-60 min</span>
+                    </div>
+                    <div class="w3-card w3-panel w3-padding-16 w3-round" onclick="configCardClickHandler(this)">
+                        <label for="Rotate-Certificate" class="w3-large w3-text-teal">Rotate Certificate</label>
+                        <input class="w3-input w3-border" name="Rotate-Certificate" value="True" type="hidden">
+                        <span style="display:block;" class="w3-small">*Add this for certificate rotation</span>
                     </div>
                 </div>
                 <!-- Internal cards for cloud -->
@@ -175,8 +180,46 @@
                     </div> 
                 </div>
                 <!-- Internal cards for getData -->
-                <div id="configCardsForGetData" class="w3-animate-left w3-hide" >
-                    This for Get data
+                <div id="configCardsForJobLogs" class="w3-animate-left w3-hide" >
+                    <div id="jobLogsInnerContainer">
+                        <div style="padding: 6px 0px;">
+                            <button class="w3-btn w3-teal" onclick="autoRefreshJobLogs(this)">Auto Refresh</button>
+                            <button id="refreshJobLogs-btn" class="w3-btn w3-teal" onclick="getJobLogs()">Refresh</button>
+                        </div>
+                        <table class="w3-table w3-centered w3-border w3-striped">
+                            <thead>
+                                <tr class="w3-green">
+                                    <th>Sr no.</th>
+                                    <th>JOB ID</th>
+                                    <th>Status</th>
+                                    <th>Date-Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyForJobLogs">
+                                <!-- <tr>
+                                    <td>1</td>
+                                    <td>D001_1</td>
+                                    <td>Received</td>
+                                    <td>Date</td>
+                                </tr> -->
+                                <!-- {%if data%}
+                                    {%for item in data%}
+                                <tr>
+                                    <td>{{loop.index}}</td>
+                                    <td>{{item.serialID}}</td>
+                                    <td>{{item.deviceProvisoned}}</td>
+                                    <td>{{item.deviceBooted}}</td>
+                                    <td><button data-devicebooted="{{item.deviceBooted}}" value="{{item.serialID}}" class="w3-button" onclick="openConfigModel(this)"><i class="fa fa-cog w3-large"></i></button></td>
+                                </tr>
+                                    {%endfor%}
+                                {%else%}
+                                <tr>
+                                    <td colspan="3"> Currently you have No device Registered</td>
+                                 </tr>
+                                {%endif%} -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
             </div>

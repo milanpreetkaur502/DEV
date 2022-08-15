@@ -1,19 +1,20 @@
 const STATE={
-    activeModalBtnName:"device",
-    activeModalBtn:document.getElementById("modalSidePanelDeviceBtn").classList,
-    prevConfigCard:document.getElementById("configCardsForDevice").classList,
-    addJobBtn:document.getElementById("addJobBtn"),
-    addJobBtnHolder:document.getElementById("addJobBtnHolder"),
-    jobCardsDisplayer:document.getElementById("jobCardsDisplayer"),
+    activeModalBtnName : "device",
+    activeModalBtn : document.getElementById("modalSidePanelDeviceBtn").classList,
+    prevConfigCard : document.getElementById("configCardsForDevice").classList,
+    addJobBtn : document.getElementById("addJobBtn"),
+    addJobBtnHolder : document.getElementById("addJobBtnHolder"),
+    jobCardsDisplayer : document.getElementById("jobCardsDisplayer"),
+    timerForAutoRefresh : null,
 }
 
 const job={
     deviceId:null,
+    from : "client",
     device:new Map(),
     cloud:new Map(),
     camera:new Map(),
     getLogs:new Map(),
-    getData:new Map()
 }
 
 function sendHandler(){
@@ -21,8 +22,9 @@ function sendHandler(){
     job.cloud=Object.fromEntries(job.cloud);
     job.camera=Object.fromEntries(job.camera);
     job.getLogs=Object.fromEntries(job.getLogs);
-    job.getData=Object.fromEntries(job.getData);
     let jsonData = JSON.stringify(job);
+    // alert(jsonData)
+    // return
     let spinner=document.getElementById("msgDisplayerRecievedFromJob");
     spinner.style.display='block';
     const url = "https://aaxsxrwma8.execute-api.us-east-1.amazonaws.com/sendJob"
@@ -54,6 +56,8 @@ function addJobHandler(element){
     let inp = element.previousSibling.previousSibling.previousSibling.previousSibling;
     let value = inp.value;
     let key = inp.name;
+    // console.log(div)
+    // console.log(inp)
     if (value==""){
         return null;
     }
@@ -126,7 +130,7 @@ function openConfigModel(btnElement){
     let modal = document.getElementById("modalForConfig");
     modal.style.display='block';
     let modalHeader = document.getElementById('modalHeader');
-    modalHeader.innerText="You are sending job to device "+btnElement.value;
+    modalHeader.innerText="You are managing device "+btnElement.value;
     job.deviceId=btnElement.value;
 }
 function closeConfigModel(){
@@ -149,4 +153,58 @@ function flashMsg(msg,color="w3-red"){
     elmnt.classList.remove("w3-red")
     elmnt.classList.add(color);
     elmnt.style.display="block";
+}
+
+function autoRefreshJobLogs(btn){
+    if(STATE.timerForAutoRefresh==null){
+        STATE.timerForAutoRefresh = window.setInterval(getJobLogs,5000)
+        let temp = document.getElementById("refreshJobLogs-btn");
+        temp.classList.add("w3-disabled")
+        btn.innerText="Stop Auto Refresh"
+        btn.classList.remove("w3-teal")
+        btn.classList.add("w3-red")
+    }else{
+        window.clearInterval(STATE.timerForAutoRefresh);
+        document.getElementById("refreshJobLogs-btn").classList.remove("w3-disabled");
+        btn.innerText="Auto Refresh"
+        btn.classList.remove("w3-red")
+        btn.classList.add("w3-teal")
+        STATE.timerForAutoRefresh=null
+    }
+   
+}
+
+function getJobLogs(){
+    const url = "http://digi.webzinny.in/getJobLogs?deviceId="+job.deviceId
+    fetch(url)
+    .then(
+        (response)=>{
+            response.json()
+            .then((data)=>{
+                if (response.status==200){
+                    console.log(data)
+                    const tBody = document.getElementById("tbodyForJobLogs");
+                    while (tBody.hasChildNodes()) {
+                        tBody.removeChild(tBody.firstChild);
+                    }
+                    data.Items.forEach(function(obj,ind) {
+                        var row = document.createElement('tr');
+                        arr = []
+                        for(let i=0;i<4;i++){
+                            arr.push(document.createElement('td'))
+                        }
+                        arr[0].appendChild(document.createTextNode(ind+1))
+                        arr[1].appendChild(document.createTextNode(obj.JobId))
+                        arr[2].appendChild(document.createTextNode(obj.JobStatus))
+                        arr[3].appendChild(document.createTextNode(obj.Timestamp))
+                        arr.forEach(function(elmnt){
+                            row.appendChild(elmnt)
+                        })
+                        tBody.appendChild(row);
+                    });
+                }else{
+                    flashMsg("Something went wrong with Job Logs","w3-red");
+                }
+            });    
+        })
 }
