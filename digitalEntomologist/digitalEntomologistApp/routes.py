@@ -9,7 +9,7 @@ import boto3
 from boto3.dynamodb.conditions import Attr
 import requests as rq
 
-file=open("/home/attu/Desktop/ScratchNest/awsCredentials.json")
+file=open("/home/attu/Desktop/ScratchNest/.credentials/awsCredentials.json")
 credentialsData=json.load(file)
 file.close()
 
@@ -22,6 +22,8 @@ dynamoDb=boto3.resource('dynamodb',
 userTable=dynamoDb.Table('user')  
 deviceDataTable=dynamoDb.Table('deviceData')  
 imageTable=dynamoDb.Table('imageKey')
+jobRecordsTable = dynamoDb.Table('JobRecordsTable')
+
 
 
 @app.route('/')
@@ -119,3 +121,14 @@ def getFiles():
         else:
             flash("Something wrong happened")
     return redirect(url_for('home'))
+
+@app.route('/getJobLogs')
+def getJobLogs():
+    if 'email' in session:
+        deviceId=request.args.get("deviceId")
+        response = jobRecordsTable.scan(FilterExpression=Attr('DeviceId').eq(deviceId))
+        response = {"Items":response['Items']}
+        # response={'Items': [{'jobId': False, 'status': 'atul@gmail.com', 'date': 'D004'}, {'jobId': True, 'status': 'atul@gmail.com', 'date': 'D002', 'deviceProvisoned': True}]}
+        return response
+    else:
+        return {"msg":"Please Log In"}
